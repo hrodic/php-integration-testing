@@ -1,0 +1,1 @@
+-- this is mounted on /docker-entrypoint-initdb.d if we need to setup some SQL on MariaDB startup

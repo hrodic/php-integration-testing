@@ -1,0 +1,42 @@
+version: '3.3'
+
+services:
+
+  cli:
+    image: php:7.3-cli
+    working_dir: /app
+    entrypoint: /bin/bash -c
+    command: tail /dev/null
+    volumes:
+      - .:/app
+    stdin_open: true
+
+  mariadb:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    tmpfs:
+      - /var/lib/mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - $PWD/docker/mariadb:/docker-entrypoint-initdb.d
+
+  rabbitmq:
+    image: rabbitmq:3.8
+    restart: always
+    environment:
+      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK=0.5
+      - RABBITMQ_ERLANG_COOKIE=secret
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_VHOST=test
+    tmpfs:
+      - /var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672

@@ -1,0 +1,1 @@
+INSERT INTO `test`.`ephemeral_table` (`float`, `varchar`, `datetime`) VALUES ('11.62', 'dummy text', '2020-04-22 16:25:45');

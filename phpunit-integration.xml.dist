@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         executionOrder="depends,defects"
+         forceCoversAnnotation="true"
+         beStrictAboutCoversAnnotation="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         convertErrorsToExceptions="true"
+         verbose="true">
+    <php>
+        <const name="DB_DSN" value="mysql:host=localhost:3306;dbname=test;charset=utf8"/>
+        <const name="DB_USERNAME" value="test"/>
+        <const name="DB_PASSWORD" value="test"/>
+    </php>
+    <testsuites>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+    </testsuites>
+    <extensions>
+        <extension class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension">
+            <arguments>
+                <object class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtensionConfig">
+                    <arguments>
+                        <array>
+                            <element key="BEFORE_FIRST_TEST_PDO_FIXTURES_PATH">
+                                <string>tests/fixtures/before-first-test</string>
+                            </element>
+                            <element key="BEFORE_TEST_PDO_FIXTURES_PATH">
+                                <string>tests/fixtures/before-test</string>
+                            </element>
+                            <element key="AFTER_TEST_PDO_FIXTURES_PATH">
+                                <string>tests/fixtures/after-test</string>
+                            </element>
+                            <element key="AFTER_LAST_TEST_PDO_FIXTURES_PATH">
+                                <string>tests/fixtures/after-last-test</string>
+                            </element>
+                        </array>
+                    </arguments>
+                </object>
+                <object class="IntegrationTesting\Driver\PDOConnection">
+                    <arguments>
+                        <string>mysql:host=localhost:3306;dbname=test;charset=utf8</string>
+                        <string>test</string>
+                        <string>test</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </extension>
+    </extensions>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-php" target="build/coverage/unit/coverage.cov"/>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+    </logging>
+</phpunit>

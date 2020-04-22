@@ -1,0 +1,54 @@
+{
+  "name": "hrodic/php-integration-testing",
+  "description": "Integration testing library for PHP",
+  "keywords": [
+    "integration",
+    "test",
+    "php"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rodrigo García",
+      "email": "hrodicus@yahoo.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/hrodic/php-integration-testing/issues"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": "^7.2",
+    "ext-pdo": "*",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-pdo_mysql": "*",
+    "ext-xml": "*",
+    "phpunit/phpunit": "^9.0",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "squizlabs/php_codesniffer": "^3.5"
+  },
+  "suggest": {
+    "ext-pdo_mysql": "For PDO related integration tests"
+  },
+  "autoload": {
+    "psr-4": {
+      "IntegrationTesting\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "IntegrationTesting\\Tests\\Integration\\": "tests/integration",
+      "IntegrationTesting\\": "tests/unit"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}

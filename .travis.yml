@@ -1,0 +1,29 @@
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    - PHPUNIT_FLAGS='--verbose'
+
+sudo: false
+
+notifications:
+  email: false
+
+php:
+  - 7.2
+  - 7.3
+  - 7.4
+
+matrix:
+  fast_finish: true
+
+before_install:
+
+install:
+  - composer update
+
+script: vendor/bin/phpunit $PHPUNIT_FLAGS
