@@ -6,7 +6,7 @@ cache:
 
 env:
   global:
-    - PHPUNIT_FLAGS='--verbose'
+    - PHPUNIT_FLAGS='--testdox --verbose'
 
 sudo: false
 
@@ -14,14 +14,11 @@ notifications:
   email: false
 
 php:
-  - 7.2
   - 7.3
   - 7.4
 
 matrix:
   fast_finish: true
-
-before_install:
 
 install:
   - composer update

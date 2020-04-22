@@ -2,6 +2,8 @@
 
 Integration testing library in PHP for databases and other common infrastructure related tests.
 
+[![Build Status](https://travis-ci.com/hrodic/php-integration-testing.svg?branch=master)](https://travis-ci.com/hrodic/php-integration-testing)
+
 It is developed as a set of extensions for PHPUnit that hooks on different events and executes your fixtures.
 
 Currently you can run custom fixtures on the following PHPUnit hooks:
