@@ -2,7 +2,7 @@
 
 namespace IntegrationTesting\PHPUnit\Runner\Extension;
 
-use IntegrationTesting\Driver\TestingException;
+use IntegrationTesting\Exception\TestingException;
 
 class PDODatabaseExtensionConfig
 {

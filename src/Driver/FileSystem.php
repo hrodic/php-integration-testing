@@ -4,6 +4,7 @@ namespace IntegrationTesting\Driver;
 
 use ArrayIterator;
 use FilesystemIterator;
+use IntegrationTesting\Exception\TestingException;
 use Iterator;
 
 class FileSystem

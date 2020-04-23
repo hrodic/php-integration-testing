@@ -4,7 +4,7 @@ namespace IntegrationTesting\PHPUnit\Runner\Extension;
 
 use IntegrationTesting\Driver\FileSystem;
 use IntegrationTesting\Driver\PDOConnection;
-use IntegrationTesting\Driver\TestingException;
+use IntegrationTesting\Exception\TestingException;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\BeforeTestHook;
 use PHPUnit\Runner\AfterTestHook;

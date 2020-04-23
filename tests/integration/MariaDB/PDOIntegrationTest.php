@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace IntegrationTesting\Tests\Integration;
+namespace IntegrationTesting\Tests\Integration\MariaDB;
 
 use IntegrationTesting\Driver\PDOConnection;
 use IntegrationTesting\WithAfterTestFixtureName;
@@ -38,5 +38,19 @@ final class PDOIntegrationTest extends TestCase implements WithBeforeTestFixture
             ['id' => 1, 'float' => '11.62', 'varchar' => 'dummy text', 'datetime' => '2020-04-22 16:25:45'],
             $data
         );
+    }
+
+    public function testPersistentTableHasAtLeastOneRow(): void
+    {
+        $conn = new PDOConnection(
+            constant('DB_DSN'),
+            constant('DB_USERNAME'),
+            constant('DB_PASSWORD')
+        );
+        $conn->PDO()->beginTransaction();
+        $statement = $conn->PDO()->query("SELECT * FROM  `test`.`persistent_table`");
+        $conn->PDO()->commit();
+        // this is the third test to run a beforeTest hook!
+        $this->assertTrue($statement->rowCount() >= 1);
     }
 }
