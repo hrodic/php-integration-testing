@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `test`.`ephemeral_table`
 
 CREATE TABLE IF NOT EXISTS `test`.`persistent_table`
 (
-    `id`       INT         NOT NULL AUTO_INCREMENT,
+    `id`      INT         NOT NULL AUTO_INCREMENT,
+    `varchar` VARCHAR(45) NULL,
     PRIMARY KEY (`id`)
 );

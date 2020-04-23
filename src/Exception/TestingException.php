@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace IntegrationTesting\Driver;
+namespace IntegrationTesting\Exception;
 
 class TestingException extends \Exception
 {
