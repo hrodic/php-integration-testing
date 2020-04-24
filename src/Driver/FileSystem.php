@@ -11,17 +11,36 @@ class FileSystem
 {
     /**
      * @param string $path
-     * @param string $extension
-     * @return Iterator
+     * @return string
      * @throws TestingException
      */
-    public static function getFileListIteratorFromPathByExtension(string $path, string $extension): Iterator
+    private function getRealPath(string $path): string
     {
         $realPath = realpath($path);
         if (!$realPath) {
             throw new TestingException("The path [$path] is not valid");
         }
-        $iterator = new FilesystemIterator($realPath);
+        return $realPath;
+    }
+
+    public function getFileContents(string $path): string
+    {
+        $path = $this->getRealPath($path);
+        if (!is_readable($path)) {
+            throw new TestingException("Filepath [$path] is not readable");
+        }
+        return file_get_contents($path);
+    }
+
+    /**
+     * @param string $path
+     * @param string $extension
+     * @return Iterator
+     * @throws TestingException
+     */
+    public function getFileListIteratorFromPathByExtension(string $path, string $extension): Iterator
+    {
+        $iterator = new FilesystemIterator($this->getRealPath($path));
         $fileList = new ArrayIterator();
         foreach ($iterator as $path => $fileInfo) {
             if ($fileInfo->isFile() && $fileInfo->isReadable() && $fileInfo->getExtension() === $extension) {
@@ -35,7 +54,7 @@ class FileSystem
      * @param Iterator $iterator
      * @param callable $callback
      */
-    public static function runCallbackOnEachFileIteratorContents(Iterator $iterator, callable $callback): void
+    public function runCallbackOnEachFileIteratorContents(Iterator $iterator, callable $callback): void
     {
         foreach ($iterator as $filePath) {
             $callback(file_get_contents($filePath));

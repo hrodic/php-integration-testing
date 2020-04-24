@@ -1,6 +1,6 @@
 {
   "pdo": {
-    "dsn": "mysql:host=mariadb;dbname=content;charset=utf8",
+    "dsn": "mysql:host=localhost:3306;dbname=test;charset=utf8",
     "user": "test",
     "password": "test",
     "fixtures": {
@@ -21,7 +21,7 @@
     }
   },
   "amqp": {
-    "host": "rabbitmq",
+    "host": "localhost",
     "port": 5672,
     "user": "test",
     "password": "test",

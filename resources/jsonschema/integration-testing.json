@@ -13,6 +13,7 @@
       "default": {},
       "examples": [
         {
+
           "extension": "sql",
           "path": "tests/fixtures/before-first-test"
         }

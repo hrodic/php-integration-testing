@@ -8,7 +8,7 @@ use IntegrationTesting\WithBeforeTestFixtureName;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension
+ * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
  * @uses \IntegrationTesting\Driver\PDOConnection
  */
 final class PDOIntegrationTest extends TestCase implements WithBeforeTestFixtureName, WithAfterTestFixtureName

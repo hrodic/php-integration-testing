@@ -6,7 +6,7 @@ use IntegrationTesting\Driver\PDOConnection;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension
+ * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
  * @uses   \IntegrationTesting\Driver\PDOConnection
  */
 final class PDOWithoutBeforeOrAfterTestFixturesTest extends TestCase

@@ -4,7 +4,7 @@ namespace IntegrationTesting\PHPUnit\Runner\Extension;
 
 use IntegrationTesting\Exception\TestingException;
 
-class PDODatabaseExtensionConfig
+class PDOFixtureConfig
 {
     /**
      * @todo Currently there is a limitation on the extension array index type.
@@ -25,7 +25,8 @@ class PDODatabaseExtensionConfig
 
     /**
      * PDODatabaseExtensionConfig constructor.
-     * @param array $params
+     *
+     * @param  array $params
      * @throws TestingException
      */
     public function __construct(array $params)
@@ -42,7 +43,7 @@ class PDODatabaseExtensionConfig
     }
 
     /**
-     * @param string $key
+     * @param  string $key
      * @return string
      * @throws TestingException
      */
