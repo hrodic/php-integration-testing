@@ -1,0 +1,532 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "definitions": {
+    "pdoFixture": {
+      "$id": "#/definitions/pdoFixture",
+      "type": "object",
+      "title": "The pdoFixture Schema",
+      "description": "PDO fixture definition.",
+      "default": {},
+      "examples": [
+        {
+          "extension": "sql",
+          "path": "tests/fixtures/before-first-test"
+        }
+      ],
+      "additionalProperties": true,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "title": "The Path Schema",
+          "description": "Path to locate fixture files",
+          "default": "",
+          "examples": [
+            "tests/fixtures/before-first-test"
+          ]
+        },
+        "extension": {
+          "$id": "#/properties/pdo/properties/fixtures/properties/beforeFirstTest/properties/extension",
+          "type": "string",
+          "title": "The Extension Schema",
+          "description": "Fixture file extension.",
+          "default": "sql",
+          "examples": [
+            "sql"
+          ]
+        }
+      }
+    },
+    "amqpPurgeQueueFixture": {
+      "type": "array",
+      "title": "The Purge Schema",
+      "description": "AMQP purge queue fixture definition",
+      "default": [],
+      "examples": [
+        [
+          "test-queue"
+        ]
+      ],
+      "additionalItems": true,
+      "items": {
+        "type": "string",
+        "title": "The Items Schema",
+        "description": "List of queue names to purge.",
+        "default": "",
+        "examples": [
+          "test-queue"
+        ]
+      }
+    },
+    "amqpPublishFixture": {
+      "$id": "#/definitions/amqpPublishFixture",
+      "type": "array",
+      "title": "The Publish Schema",
+      "description": "AMQP Publish message definition.",
+      "default": [],
+      "examples": [
+        [
+          {
+            "queue": "test-queue",
+            "path": "tests/fixtures/before-first-test",
+            "extension": "json",
+            "exchange": "test-exchange",
+            "routing_key": "before-first-test"
+          }
+        ]
+      ],
+      "additionalItems": true,
+      "items": {
+        "type": "object",
+        "default": {},
+        "examples": [
+          {
+            "exchange": "test-exchange",
+            "routing_key": "before-first-test",
+            "queue": "test-queue",
+            "path": "tests/fixtures/before-first-test",
+            "extension": "json"
+          }
+        ],
+        "additionalProperties": true,
+        "required": [
+          "exchange",
+          "queue",
+          "path"
+        ],
+        "properties": {
+          "exchange": {
+            "type": "string",
+            "title": "The Exchange Schema",
+            "description": "AMQP exchange name.",
+            "default": "",
+            "examples": [
+              "test-exchange"
+            ]
+          },
+          "queue": {
+            "type": "string",
+            "title": "The Queue Schema",
+            "description": "AMQP queue name.",
+            "default": "",
+            "examples": [
+              "test-queue"
+            ]
+          },
+          "routing_key": {
+            "type": "string",
+            "title": "The Routing_key Schema",
+            "description": "The key used for routing from the exchange to the queue.",
+            "default": "",
+            "examples": [
+              "before-first-test"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "title": "The Path Schema",
+            "description": "Path to find message body files.",
+            "default": "",
+            "examples": [
+              "tests/fixtures/before-first-test"
+            ]
+          },
+          "extension": {
+            "type": "string",
+            "title": "The Extension Schema",
+            "description": "Extension of the message body files.",
+            "default": "json",
+            "examples": [
+              "json"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "default": {},
+  "additionalProperties": true,
+  "required": [],
+  "properties": {
+    "pdo": {
+      "$id": "#/properties/pdo",
+      "type": "object",
+      "title": "The Pdo Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "password": "test",
+          "user": "test",
+          "dsn": "mysql:host=mariadb;dbname=content;charset=utf8",
+          "fixtures": {
+            "beforeTest": {
+              "extension": "sql",
+              "path": "tests/fixtures/before-test"
+            },
+            "afterTest": {
+              "path": "tests/fixtures/after-test",
+              "extension": "sql"
+            },
+            "afterLastTest": {
+              "path": "tests/fixtures/after-last-test",
+              "extension": "sql"
+            },
+            "beforeFirstTest": {
+              "extension": "sql",
+              "path": "tests/fixtures/before-first-test"
+            }
+          }
+        }
+      ],
+      "additionalProperties": true,
+      "required": [
+        "fixtures"
+      ],
+      "properties": {
+        "dsn": {
+          "$id": "#/properties/pdo/properties/dsn",
+          "type": "string",
+          "title": "The Dsn Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "mysql:host=mariadb;dbname=content;charset=utf8"
+          ]
+        },
+        "user": {
+          "$id": "#/properties/pdo/properties/user",
+          "type": "string",
+          "title": "The User Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "test"
+          ]
+        },
+        "password": {
+          "$id": "#/properties/pdo/properties/password",
+          "type": "string",
+          "title": "The Password Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "test"
+          ]
+        },
+        "fixtures": {
+          "$id": "#/properties/pdo/properties/fixtures",
+          "type": "object",
+          "title": "The Fixtures Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "afterTest": {
+                "extension": "sql",
+                "path": "tests/fixtures/after-test"
+              },
+              "afterLastTest": {
+                "path": "tests/fixtures/after-last-test",
+                "extension": "sql"
+              },
+              "beforeFirstTest": {
+                "path": "tests/fixtures/before-first-test"
+              },
+              "beforeTest": {
+                "path": "tests/fixtures/before-test"
+              }
+            }
+          ],
+          "additionalProperties": true,
+          "required": [],
+          "properties": {
+            "beforeFirstTest": {
+              "$ref": "#/definitions/pdoFixture"
+            },
+            "beforeTest": {
+              "$ref": "#/definitions/pdoFixture"
+            },
+            "afterTest": {
+              "$ref": "#/definitions/pdoFixture"
+            },
+            "afterLastTest": {
+              "$ref": "#/definitions/pdoFixture"
+            }
+          }
+        }
+      }
+    },
+    "amqp": {
+      "$id": "#/properties/amqp",
+      "type": "object",
+      "title": "The amqp Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "vhost": "test",
+          "fixtures": {
+            "beforeTest": {
+              "purgeQueues": [
+                "test-queue"
+              ],
+              "publishMessages": [
+                {
+                  "exchange": "test-exchange",
+                  "routing_key": "before-test",
+                  "queue": "test-queue",
+                  "path": "tests/fixtures/before-test",
+                  "extension": "json"
+                }
+              ]
+            },
+            "afterTest": {
+              "purgeQueues": [
+                "test-queue"
+              ]
+            },
+            "afterLastTest": {
+              "purgeQueues": [
+                "test-queue"
+              ]
+            },
+            "beforeFirstTest": {
+              "purgeQueues": [
+                "test-queue"
+              ],
+              "publishMessages": [
+                {
+                  "exchange": "test-exchange",
+                  "routing_key": "before-first-test",
+                  "queue": "test-queue",
+                  "path": "tests/fixtures/before-first-test",
+                  "extension": "json"
+                }
+              ]
+            }
+          },
+          "password": "test",
+          "host": "rabbitmq",
+          "port": 5672.0,
+          "user": "test"
+        }
+      ],
+      "additionalProperties": true,
+      "required": [
+        "fixtures"
+      ],
+      "properties": {
+        "host": {
+          "$id": "#/properties/amqp/properties/host",
+          "type": "string",
+          "title": "The Host Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "rabbitmq"
+          ]
+        },
+        "port": {
+          "$id": "#/properties/amqp/properties/port",
+          "type": "integer",
+          "title": "The Port Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            5672.0
+          ]
+        },
+        "user": {
+          "$id": "#/properties/amqp/properties/user",
+          "type": "string",
+          "title": "The User Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "test"
+          ]
+        },
+        "password": {
+          "$id": "#/properties/amqp/properties/password",
+          "type": "string",
+          "title": "The Password Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "test"
+          ]
+        },
+        "vhost": {
+          "$id": "#/properties/amqp/properties/vhost",
+          "type": "string",
+          "title": "The Vhost Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "test"
+          ]
+        },
+        "fixtures": {
+          "$id": "#/properties/amqp/properties/fixtures",
+          "type": "object",
+          "title": "The Fixtures Schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "beforeTest": {
+                "purgeQueues": [
+                  "test-queue"
+                ],
+                "publishMessages": [
+                  {
+                    "extension": "json",
+                    "exchange": "test-exchange",
+                    "routing_key": "before-test",
+                    "queue": "test-queue",
+                    "path": "tests/fixtures/before-test"
+                  }
+                ]
+              },
+              "afterTest": {
+                "purgeQueues": [
+                  "test-queue"
+                ]
+              },
+              "afterLastTest": {
+                "purgeQueues": [
+                  "test-queue"
+                ]
+              },
+              "beforeFirstTest": {
+                "purgeQueues": [
+                  "test-queue"
+                ],
+                "publishMessages": [
+                  {
+                    "routing_key": "before-first-test",
+                    "queue": "test-queue",
+                    "path": "tests/fixtures/before-first-test",
+                    "extension": "json",
+                    "exchange": "test-exchange"
+                  }
+                ]
+              }
+            }
+          ],
+          "additionalProperties": true,
+          "required": [],
+          "properties": {
+            "beforeFirstTest": {
+              "$id": "#/properties/amqp/properties/fixtures/properties/beforeFirstTest",
+              "type": "object",
+              "title": "The Beforefirsttest Schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "purgeQueues": [
+                    "test-queue"
+                  ],
+                  "publishMessages": [
+                    {
+                      "extension": "json",
+                      "exchange": "test-exchange",
+                      "routing_key": "before-first-test",
+                      "queue": "test-queue",
+                      "path": "tests/fixtures/before-first-test"
+                    }
+                  ]
+                }
+              ],
+              "additionalProperties": true,
+              "required": [],
+              "properties": {
+                "purgeQueues": {  "$ref": "#/definitions/amqpPurgeQueueFixture" },
+                "publishMessages": {
+                  "$ref": "#/definitions/amqpPublishFixture"
+                }
+              }
+            },
+            "beforeTest": {
+              "$id": "#/properties/amqp/properties/fixtures/properties/beforeTest",
+              "type": "object",
+              "title": "The Beforetest Schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "purgeQueues": [
+                    "test-queue"
+                  ],
+                  "publishMessages": [
+                    {
+                      "routing_key": "before-test",
+                      "queue": "test-queue",
+                      "path": "tests/fixtures/before-test",
+                      "extension": "json",
+                      "exchange": "test-exchange"
+                    }
+                  ]
+                }
+              ],
+              "additionalProperties": true,
+              "required": [],
+              "properties": {
+                "purgeQueues": {  "$ref": "#/definitions/amqpPurgeQueueFixture" },
+                "publishMessages": {
+                  "$ref": "#/definitions/amqpPublishFixture"
+                }
+              }
+            },
+            "afterTest": {
+              "$id": "#/properties/amqp/properties/fixtures/properties/afterTest",
+              "type": "object",
+              "title": "The Aftertest Schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "purgeQueues": [
+                    "test-queue"
+                  ]
+                }
+              ],
+              "additionalProperties": true,
+              "required": [],
+              "properties": {
+                "purgeQueues": {  "$ref": "#/definitions/amqpPurgeQueueFixture" }
+              }
+            },
+            "afterLastTest": {
+              "$id": "#/properties/amqp/properties/fixtures/properties/afterLastTest",
+              "type": "object",
+              "title": "The Afterlasttest Schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "purgeQueues": [
+                    "test-queue"
+                  ]
+                }
+              ],
+              "additionalProperties": true,
+              "required": [],
+              "properties": {
+                "purgeQueues": {  "$ref": "#/definitions/amqpPurgeQueueFixture" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
