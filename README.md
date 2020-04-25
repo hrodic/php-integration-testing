@@ -17,7 +17,7 @@ Currently you can run custom fixtures on the following PHPUnit hooks:
 
 ## Road map
 
-* RabbitMQ integration
+* WIP: AMQP specific test fixtures with WithBeforeTestFixtureName and WithAfterTestFixtureName
 
 
 ## Requirements
@@ -85,9 +85,65 @@ Example:
 },
 ```
 
-### RabbitMQ fixtures
+### AMQP fixtures
 
-@todo
+You can also try out AMQP (tested on RabbitMQ) fixtures and operations.
+
+Configure your connectivity and the hook operations using the configuration file.
+
+Notes:
+* Hook definitions are optional, so just configure the ones you need.
+* You can only publish messages on `beforeFirstTest` and on `beforeTest`.
+* You can purge queues in all four hooks.
+* file extension of message bodies to publish defaults to `json`
+* use `routing_key` if you have your exchange configured as `direct`. You can define it as empty string if `fanout`
+
+```
+"amqp": {
+    "host": "localhost",
+    "port": 5672,
+    "user": "test",
+    "password": "test",
+    "vhost": "/",
+    "fixtures": {
+      "beforeFirstTest": {
+        "purgeQueues": [
+          "before-first-test-queue"
+        ],
+        "publishMessages": [
+          {
+            "exchange": "test-exchange",
+            "queue": "before-first-test-queue",
+            "routing_key": "before-first-test",
+            "path": "tests/fixtures/before-first-test",
+            "extension": "json"
+          }
+        ]
+      },
+      "beforeTest": {
+        "purgeQueues": [
+          "before-test-queue"
+        ],
+        "publishMessages": [
+          {
+            "exchange": "test-exchange",
+            "queue": "before-test-queue",
+            "routing_key": "before-test",
+            "path": "tests/fixtures/before-test"
+          }
+        ]
+      },
+      "afterTest": {
+        "purgeQueues": [
+          "before-test-queue"
+        ]
+      },
+      "afterLastTest": {
+        "purgeQueues": []
+      }
+    }
+  }
+```
 
 ## Fixture creation
 
