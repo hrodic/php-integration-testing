@@ -4,10 +4,6 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-env:
-  global:
-    - PHPUNIT_FLAGS='--testdox --verbose'
-
 sudo: false
 
 notifications:
@@ -21,6 +17,8 @@ matrix:
   fast_finish: true
 
 install:
-  - composer update
+  - make install
 
-script: vendor/bin/phpunit $PHPUNIT_FLAGS
+script:
+  - make test-unit
+  - make test-integration

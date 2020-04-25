@@ -6,6 +6,7 @@ interface WithAfterTestFixtureName
 {
     /**
      * PDODatabaseExtension will try to get the fixture name
+     *
      * @return string
      */
     public static function getAfterTestFixtureName(): string;

@@ -34,78 +34,56 @@ composer require --dev hrodic/php-integration-testing
 
 On PHPUnit configuration XML file you must specify the extension with its configuration.
 
-If you need help with PHPUnit extensions, please refer to the [Official Documentation](https://phpunit.readthedocs.io/en/9.1/configuration.html#the-extensions-element)
-
-As an example, look into phpunit-integration.xml.dist.
-
-
-### PDO Driver
-
-If you need to test the integration of MySQL or MariaDB, use the PDO driver extension.
+You are able to specify the configuration filename that you will be using. Defaults to .integration-testing.json
 
 ```
 <extensions>
-    <extension class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension">
+    <extension class="IntegrationTesting\PHPUnit\Runner\Extension\Handler">
         <arguments>
-            <object class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtensionConfig">
-                <arguments>
-                    <array>
-                        <element key="BEFORE_FIRST_TEST_PDO_FIXTURES_PATH">
-                            <string>tests/fixtures/before-first-test</string>
-                        </element>
-                        <element key="BEFORE_TEST_PDO_FIXTURES_PATH">
-                            <string>tests/fixtures/before-test</string>
-                        </element>
-                        <element key="AFTER_TEST_PDO_FIXTURES_PATH">
-                            <string>tests/fixtures/after-test</string>
-                        </element>
-                        <element key="AFTER_LAST_TEST_PDO_FIXTURES_PATH">
-                            <string>tests/fixtures/after-last-test</string>
-                        </element>
-                    </array>
-                </arguments>
-            </object>
-            <object class="IntegrationTesting\Driver\PDOConnection">
-                <arguments>
-                    <string>mysql:host=localhost:3306;dbname=test;charset=utf8</string>
-                    <string>test</string>
-                    <string>test</string>
-                </arguments>
-            </object>
+            <string>.integration-testing.json</string>
         </arguments>
     </extension>
 </extensions>
 ```
 
-The extension class is
+You also check phpunit-integration.xml.dist example
+
+If you need help with PHPUnit extensions, please refer to the [Official Documentation](https://phpunit.readthedocs.io/en/9.1/configuration.html#the-extensions-element)
+
+### PDO Fixtures
+
+If you need to test the integration of MySQL or MariaDB, use the PDO driver extension.
+
+It requires configuration parameters that can be found in the json config file.
+
+The most important parameters are DSN, username and password of your database + some fixture path definitions.
+
+Example: 
 ```
-IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension
+"pdo": {
+    "dsn": "mysql:host=localhost:3306;dbname=test;charset=utf8",
+    "user": "test",
+    "password": "test",
+    "fixtures": {
+      "beforeFirstTest": {
+        "path": "tests/fixtures/before-first-test",
+        "extension": "sql"
+      },
+      "beforeTest": {
+        "path": "tests/fixtures/before-test",
+        "extension": "sql"
+      },
+      "afterTest": {
+        "path": "tests/fixtures/after-test"
+      },
+      "afterLastTest": {
+        "path": "tests/fixtures/after-last-test"
+      }
+    }
+},
 ```
 
-which requires a configuration and a PDO connection as arguments via XML config
-
-The configuration class allows you to define in which paths your fixtures will be located
-
-```
-IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtensionConfig
-```
-
-The config keys to define each hook type are:
-
-* BEFORE_FIRST_TEST_PDO_FIXTURES_PATH
-* BEFORE_TEST_PDO_FIXTURES_PATH
-* AFTER_TEST_PDO_FIXTURES_PATH
-* AFTER_LAST_TEST_PDO_FIXTURES_PATH
-
-The PDOConnection class is just a wrapper of the PDO PHP class.
-
-```
-IntegrationTesting\Driver\PDOConnection
-```
-
-It requires DSN, username and password of your database.
-
-### RabbitMQ driver
+### RabbitMQ fixtures
 
 @todo
 

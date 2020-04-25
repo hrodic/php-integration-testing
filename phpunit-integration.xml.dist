@@ -20,33 +20,9 @@
         </testsuite>
     </testsuites>
     <extensions>
-        <extension class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtension">
+        <extension class="IntegrationTesting\PHPUnit\Runner\Extension\Handler">
             <arguments>
-                <object class="IntegrationTesting\PHPUnit\Runner\Extension\PDODatabaseExtensionConfig">
-                    <arguments>
-                        <array>
-                            <element key="BEFORE_FIRST_TEST_PDO_FIXTURES_PATH">
-                                <string>tests/fixtures/before-first-test</string>
-                            </element>
-                            <element key="BEFORE_TEST_PDO_FIXTURES_PATH">
-                                <string>tests/fixtures/before-test</string>
-                            </element>
-                            <element key="AFTER_TEST_PDO_FIXTURES_PATH">
-                                <string>tests/fixtures/after-test</string>
-                            </element>
-                            <element key="AFTER_LAST_TEST_PDO_FIXTURES_PATH">
-                                <string>tests/fixtures/after-last-test</string>
-                            </element>
-                        </array>
-                    </arguments>
-                </object>
-                <object class="IntegrationTesting\Driver\PDOConnection">
-                    <arguments>
-                        <string>mysql:host=localhost:3306;dbname=test;charset=utf8</string>
-                        <string>test</string>
-                        <string>test</string>
-                    </arguments>
-                </object>
+                <string>.integration-testing.json</string>
             </arguments>
         </extension>
     </extensions>

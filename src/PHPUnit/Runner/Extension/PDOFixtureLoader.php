@@ -5,20 +5,18 @@ namespace IntegrationTesting\PHPUnit\Runner\Extension;
 use IntegrationTesting\Driver\FileSystem;
 use IntegrationTesting\Driver\PDOConnection;
 use IntegrationTesting\Exception\TestingException;
-use PHPUnit\Runner\BeforeFirstTestHook;
-use PHPUnit\Runner\BeforeTestHook;
-use PHPUnit\Runner\AfterTestHook;
-use PHPUnit\Runner\AfterLastTestHook;
 
-final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook, AfterTestHook, AfterLastTestHook
+final class PDOFixtureLoader implements FixtureLoader
 {
     const EXTENSION_SQL = 'sql';
 
+    private $fileSystem;
     private $config;
     private $connection;
 
-    public function __construct(PDODatabaseExtensionConfig $config, PDOConnection $connection)
+    public function __construct(FileSystem $fileSystem, PDOFixtureConfig $config, PDOConnection $connection)
     {
+        $this->fileSystem = $fileSystem;
         $this->config = $config;
         $this->connection = $connection;
     }
@@ -28,7 +26,7 @@ final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook,
      */
     public function executeBeforeFirstTest(): void
     {
-        $path = $this->config->getParam(PDODatabaseExtensionConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH);
+        $path = $this->config->getParam(PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH);
         $this->runFixturesUnderPath($path);
     }
 
@@ -38,7 +36,7 @@ final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook,
      */
     public function executeBeforeTest(string $test): void
     {
-        $stage = PDODatabaseExtensionConfig::BEFORE_TEST_PDO_FIXTURES_PATH;
+        $stage = PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH;
         $path = $this->config->getParam($stage);
         $this->runFixturesUnderPath($path);
         $className = '\\' . substr($test, 0, strpos($test, ':'));
@@ -59,7 +57,7 @@ final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook,
      */
     public function executeAfterTest(string $test, float $time): void
     {
-        $stage = PDODatabaseExtensionConfig::AFTER_TEST_PDO_FIXTURES_PATH;
+        $stage = PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH;
         $path = $this->config->getParam($stage);
         $this->runFixturesUnderPath($path);
         $className = '\\' . substr($test, 0, strpos($test, ':'));
@@ -76,7 +74,7 @@ final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook,
      */
     public function executeAfterLastTest(): void
     {
-        $path = $this->config->getParam(PDODatabaseExtensionConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH);
+        $path = $this->config->getParam(PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH);
         $this->runFixturesUnderPath($path);
     }
 
@@ -88,13 +86,16 @@ final class PDODatabaseExtension implements BeforeFirstTestHook, BeforeTestHook,
     {
         try {
             $this->connection->PDO()->beginTransaction();
-            $iterator = FileSystem::getFileListIteratorFromPathByExtension(
+            $iterator = $this->fileSystem->getFileListIteratorFromPathByExtension(
                 $path,
                 self::EXTENSION_SQL
             );
-            FileSystem::runCallbackOnEachFileIteratorContents($iterator, function (string $contents) {
-                $this->connection->PDO()->exec($contents);
-            });
+            $this->fileSystem->runCallbackOnEachFileIteratorContents(
+                $iterator,
+                function (string $contents) {
+                    $this->connection->PDO()->exec($contents);
+                }
+            );
             $this->connection->PDO()->commit();
         } catch (TestingException $exception) {
             $this->connection->PDO()->rollBack();

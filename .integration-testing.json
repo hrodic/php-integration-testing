@@ -1,0 +1,69 @@
+{
+  "pdo": {
+    "dsn": "mysql:host=localhost:3306;dbname=test;charset=utf8",
+    "user": "test",
+    "password": "test",
+    "fixtures": {
+      "beforeFirstTest": {
+        "path": "tests/fixtures/before-first-test",
+        "extension": "sql"
+      },
+      "beforeTest": {
+        "path": "tests/fixtures/before-test",
+        "extension": "sql"
+      },
+      "afterTest": {
+        "path": "tests/fixtures/after-test"
+      },
+      "afterLastTest": {
+        "path": "tests/fixtures/after-last-test"
+      }
+    }
+  },
+  "amqp": {
+    "host": "localhost",
+    "port": 5672,
+    "user": "test",
+    "password": "test",
+    "vhost": "test",
+    "fixtures": {
+      "beforeFirstTest": {
+        "purgeQueues": [
+          "test-queue"
+        ],
+        "publishMessages": [
+          {
+            "exchange": "test-exchange",
+            "queue": "test-queue",
+            "routing_key": "before-first-test",
+            "path": "tests/fixtures/before-first-test",
+            "extension": "json"
+          }
+        ]
+      },
+      "beforeTest": {
+        "purgeQueues": [
+          "test-queue"
+        ],
+        "publishMessages": [
+          {
+            "exchange": "test-exchange",
+            "queue": "test-queue",
+            "routing_key": "before-test",
+            "path": "tests/fixtures/before-test"
+          }
+        ]
+      },
+      "afterTest": {
+        "purgeQueues": [
+          "test-queue"
+        ]
+      },
+      "afterLastTest": {
+        "purgeQueues": [
+          "test-queue"
+        ]
+      }
+    }
+  }
+}
