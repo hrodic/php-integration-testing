@@ -34,4 +34,4 @@ script:
   - make merge-coverage
 
 after_success:
-  - ./cc-test-reporter after-build -t clover -p build/coverage/merged.xml --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build -t clover -p build/coverage --exit-code $TRAVIS_TEST_RESULT
