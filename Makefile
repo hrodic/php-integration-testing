@@ -1,4 +1,4 @@
-.PHONY : install beautify up down test-unit test-integration debug-test-integration
+.PHONY : install beautify up down test-unit test-integration merge-coverage debug-test-integration
 .DEFAULT : install
 
 install:
@@ -15,5 +15,7 @@ test-integration: up
 	sleep 20
 	@-vendor/bin/phpunit --color --testdox --verbose -c phpunit-integration.xml.dist
 	make down
+merge-coverage:
+	vendor/bin/phpcov merge --clover build/coverage/merged.xml build/coverage
 debug-test-integration:
 	php -dxdebug.remote_mode=jit vendor/bin/phpunit --no-coverage --color --testdox --group debug -c phpunit-integration.xml.dist

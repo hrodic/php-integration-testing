@@ -4,6 +4,10 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+env:
+  global:
+    - CC_TEST_REPORTER_ID=75b16116f852c9da87a18fea5a5a9b62202a154df345660898ee9ef2ab1149e1
+
 sudo: false
 
 notifications:
@@ -16,9 +20,19 @@ php:
 matrix:
   fast_finish: true
 
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 install:
   - make install
 
 script:
   - make test-unit
   - make test-integration
+  - make merge-coverage
+
+after_script:
+  - cp build/coverage/merged.xml clover.xml
+  - ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT

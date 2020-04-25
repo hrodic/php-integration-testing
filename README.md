@@ -3,6 +3,8 @@
 Integration testing library in PHP for databases and other common infrastructure related tests.
 
 [![Build Status](https://travis-ci.com/hrodic/php-integration-testing.svg?branch=master)](https://travis-ci.com/hrodic/php-integration-testing)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dffdb42a04d9db1a9b89/maintainability)](https://codeclimate.com/github/hrodic/php-integration-testing/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/dffdb42a04d9db1a9b89/test_coverage)](https://codeclimate.com/github/hrodic/php-integration-testing/test_coverage)
 
 It is developed as a set of extensions for PHPUnit that hooks on different events and executes your fixtures.
 
