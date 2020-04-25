@@ -4,6 +4,10 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+env:
+  global:
+    - CC_TEST_REPORTER_ID=75b16116f852c9da87a18fea5a5a9b62202a154df345660898ee9ef2ab1149e1
+
 sudo: false
 
 notifications:
@@ -16,6 +20,11 @@ php:
 matrix:
   fast_finish: true
 
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 install:
   - make install
 
@@ -25,4 +34,4 @@ script:
   - make merge-coverage
 
 after_success:
-  - travis_retry php vendor/bin/php-coveralls
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

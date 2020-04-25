@@ -16,19 +16,26 @@ class FileSystemTest extends TestCase
      * @var FileSystem
      */
     private $sut;
+    private $tmpDir;
 
     public function setUp(): void
     {
         $this->sut = new FileSystem();
+        $this->tmpDir = 'build/tmp';
+        mkdir($this->tmpDir, 0777, true);
+    }
+
+    public function tearDown(): void
+    {
+        rmdir($this->tmpDir);
     }
 
     public function testGetFileContentsOk(): void
     {
-        $file = tmpfile();
-        $path = stream_get_meta_data($file)['uri'];
-        file_put_contents($path, 'contents');
-        $content = $this->sut->getFileContents($path);
-        fclose($file);
+        $filePath = $this->tmpDir . DIRECTORY_SEPARATOR . uniqid() . '.test';
+        file_put_contents($filePath, 'contents');
+        $content = $this->sut->getFileContents($filePath);
+        unlink($filePath);
         $this->assertSame('contents', $content);
     }
 
@@ -40,11 +47,10 @@ class FileSystemTest extends TestCase
 
     public function testGetFileListIteratorFromPathByExtension(): void
     {
-        $tmpDir = sys_get_temp_dir();
-        $filePath = $tmpDir . DIRECTORY_SEPARATOR . uniqid() . '.test';
+        $filePath = $this->tmpDir . DIRECTORY_SEPARATOR . uniqid() . '.test';
         file_put_contents($filePath, '');
+        $iterator = $this->sut->getFileListIteratorFromPathByExtension($this->tmpDir, 'test');
         unlink($filePath);
-        $iterator = $this->sut->getFileListIteratorFromPathByExtension($tmpDir, 'test');
         $this->assertSame(1, count($iterator));
     }
 
