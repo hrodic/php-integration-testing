@@ -9,12 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class HandlerConfigurationTest
  * @package IntegrationTesting\Tests\Integration\FileSystem
- * @covers \IntegrationTesting\PHPUnit\Runner\Extension\Handler
- * @uses \IntegrationTesting\Driver\FileSystem
- * @uses \IntegrationTesting\Driver\PDOConnection
- * @uses \IntegrationTesting\PHPUnit\Runner\Extension\Configuration
- * @uses \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureConfig
- * @uses \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
+ * @coversNothing
  */
 final class HandlerConfigurationTest extends TestCase
 {

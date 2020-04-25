@@ -21,8 +21,8 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.3",
-    "ext-pdo": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "ext-json": "*",
@@ -30,12 +30,14 @@
     "ext-pdo_mysql": "*",
     "ext-xml": "*",
     "friendsofphp/php-cs-fixer": "^2.16",
+    "php-amqplib/php-amqplib": "^2.11",
     "phpunit/phpcov": "^6.0",
     "phpunit/phpunit": "^8.5",
     "squizlabs/php_codesniffer": "^3.5"
   },
   "suggest": {
-    "ext-pdo_mysql": "For PDO related integration tests"
+    "ext-pdo_mysql": "For PDO related integration tests",
+    "php-amqplib/php-amqplib": "For AMQP related integration tests"
   },
   "autoload": {
     "psr-4": {

@@ -56,6 +56,15 @@ class FileSystemTest extends TestCase
 
     public function testRunCallbackOnEachFileIteratorContents(): void
     {
-        $this->markTestIncomplete();
+        $filePath = $this->tmpDir . DIRECTORY_SEPARATOR . uniqid() . '.test';
+        file_put_contents($filePath, 'test');
+        $receivedContents = null;
+        $callable = function ($contents) use (&$receivedContents) {
+            $receivedContents = $contents;
+        };
+        $iterator = new \ArrayIterator([$filePath]);
+        $this->sut->runCallbackOnEachFileIteratorContents($iterator, $callable);
+        unlink($filePath);
+        $this->assertSame('test', $receivedContents);
     }
 }

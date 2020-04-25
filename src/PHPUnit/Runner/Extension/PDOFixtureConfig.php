@@ -6,10 +6,6 @@ use IntegrationTesting\Exception\TestingException;
 
 class PDOFixtureConfig
 {
-    /**
-     * @todo Currently there is a limitation on the extension array index type.
-     * It only accepts numeric indexes and not strings, so the XML config is less readable.
-     */
     const BEFORE_FIRST_TEST_PDO_FIXTURES_PATH = 'BEFORE_FIRST_TEST_PDO_FIXTURES_PATH';
     const BEFORE_TEST_PDO_FIXTURES_PATH = 'BEFORE_TEST_PDO_FIXTURES_PATH';
     const AFTER_TEST_PDO_FIXTURES_PATH = 'AFTER_TEST_PDO_FIXTURES_PATH';

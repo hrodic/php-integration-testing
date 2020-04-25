@@ -1,15 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace IntegrationTesting\Tests\Integration\MariaDB;
+namespace IntegrationTesting\Tests\Integration\PDO;
 
 use IntegrationTesting\Driver\PDOConnection;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
- * @uses   \IntegrationTesting\Driver\PDOConnection
+ * Class MariaDBWithoutBeforeOrAfterTestFixturesTest
+ * @package IntegrationTesting\Tests\Integration\PDO
+ * @coversNothing
  */
-final class PDOWithoutBeforeOrAfterTestFixturesTest extends TestCase
+final class MariaDBWithoutBeforeOrAfterTestFixturesTest extends TestCase
 {
     public function testReadingEphemeralTableHasNoContents(): void
     {

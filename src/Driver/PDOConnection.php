@@ -4,6 +4,11 @@ namespace IntegrationTesting\Driver;
 
 use PDO;
 
+/**
+ * Class PDOConnection
+ * @package IntegrationTesting\Driver
+ * @internal NOT FOR PUBLIC USE
+ */
 class PDOConnection
 {
     private $PDO;
