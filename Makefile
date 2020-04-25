@@ -18,4 +18,4 @@ test-integration: up
 merge-coverage:
 	vendor/bin/phpcov merge --clover build/coverage/merged.xml build/coverage
 debug-test-integration:
-	php -dxdebug.remote_mode=jit vendor/bin/phpunit --no-coverage --color --testdox --group debug -c phpunit-integration.xml.dist
+	php vendor/bin/phpunit --no-coverage --color --testdox --group debug -c phpunit-integration.xml.dist

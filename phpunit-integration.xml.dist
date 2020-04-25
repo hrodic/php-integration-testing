@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.0/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/integration/Bootstrap.php"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -13,6 +13,10 @@
         <const name="DB_DSN" value="mysql:host=localhost:3306;dbname=test;charset=utf8"/>
         <const name="DB_USERNAME" value="test"/>
         <const name="DB_PASSWORD" value="test"/>
+        <const name="RABBITMQ_HOST" value="localhost"/>
+        <const name="RABBITMQ_PORT" value="5672"/>
+        <const name="RABBITMQ_USER" value="test"/>
+        <const name="RABBITMQ_PASSWORD" value="test"/>
     </php>
     <testsuites>
         <testsuite name="integration">

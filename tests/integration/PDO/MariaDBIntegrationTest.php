@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace IntegrationTesting\Tests\Integration\MariaDB;
+namespace IntegrationTesting\Tests\Integration\PDO;
 
 use IntegrationTesting\Driver\PDOConnection;
 use IntegrationTesting\WithAfterTestFixtureName;
@@ -8,10 +8,11 @@ use IntegrationTesting\WithBeforeTestFixtureName;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
- * @uses \IntegrationTesting\Driver\PDOConnection
+ * Class MariaDBIntegrationTest
+ * @package IntegrationTesting\Tests\Integration\PDO
+ * @coversNothing
  */
-final class PDOIntegrationTest extends TestCase implements WithBeforeTestFixtureName, WithAfterTestFixtureName
+final class MariaDBIntegrationTest extends TestCase implements WithBeforeTestFixtureName, WithAfterTestFixtureName
 {
     private const FIXTURE_NAME = 'pdo-integration-test';
 

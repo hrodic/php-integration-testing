@@ -7,6 +7,11 @@ use FilesystemIterator;
 use IntegrationTesting\Exception\TestingException;
 use Iterator;
 
+/**
+ * Class FileSystem
+ * @package IntegrationTesting\Driver
+ * @internal NOT FOR PUBLIC USE
+ */
 class FileSystem
 {
     /**
@@ -53,11 +58,12 @@ class FileSystem
     /**
      * @param Iterator $iterator
      * @param callable $callback
+     * @throws TestingException
      */
     public function runCallbackOnEachFileIteratorContents(Iterator $iterator, callable $callback): void
     {
         foreach ($iterator as $filePath) {
-            $callback(file_get_contents($filePath));
+            $callback($this->getFileContents($filePath));
         }
     }
 }

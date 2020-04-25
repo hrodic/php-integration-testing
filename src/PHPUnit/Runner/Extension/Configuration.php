@@ -24,22 +24,12 @@ final class Configuration
         'port' => 5672,
         'user' => 'test',
         'password' => 'test',
-        'vhost' => 'test',
+        'vhost' => '/',
         'fixtures' => [
-            'beforeFirstTest' => [
-                'purgeQueues' => [],
-                'publishMessages' => []
-            ],
-            'beforeTest' => [
-                'purgeQueues' => [],
-                'publishMessages' => []
-            ],
-            'afterTest' => [
-                'purgeQueues' => []
-            ],
-            'afterLastTest' => [
-                'purgeQueues' => []
-            ]
+            'beforeFirstTest' => [],
+            'beforeTest' => [],
+            'afterTest' => [],
+            'afterLastTest' => []
         ]
     ];
     private $PDOParams = [];

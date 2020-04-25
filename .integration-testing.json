@@ -25,16 +25,16 @@
     "port": 5672,
     "user": "test",
     "password": "test",
-    "vhost": "test",
+    "vhost": "/",
     "fixtures": {
       "beforeFirstTest": {
         "purgeQueues": [
-          "test-queue"
+          "before-first-test-queue"
         ],
         "publishMessages": [
           {
             "exchange": "test-exchange",
-            "queue": "test-queue",
+            "queue": "before-first-test-queue",
             "routing_key": "before-first-test",
             "path": "tests/fixtures/before-first-test",
             "extension": "json"
@@ -43,12 +43,12 @@
       },
       "beforeTest": {
         "purgeQueues": [
-          "test-queue"
+          "before-test-queue"
         ],
         "publishMessages": [
           {
             "exchange": "test-exchange",
-            "queue": "test-queue",
+            "queue": "before-test-queue",
             "routing_key": "before-test",
             "path": "tests/fixtures/before-test"
           }
@@ -56,13 +56,11 @@
       },
       "afterTest": {
         "purgeQueues": [
-          "test-queue"
+          "before-test-queue"
         ]
       },
       "afterLastTest": {
-        "purgeQueues": [
-          "test-queue"
-        ]
+        "purgeQueues": []
       }
     }
   }

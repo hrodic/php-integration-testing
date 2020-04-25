@@ -2,8 +2,10 @@
 
 namespace IntegrationTesting\PHPUnit\Runner\Extension;
 
+use IntegrationTesting\Driver\AMQPConnection;
 use IntegrationTesting\Driver\FileSystem;
 use IntegrationTesting\Driver\PDOConnection;
+use IntegrationTesting\Driver\RabbitMQ\RabbitMQService;
 use IntegrationTesting\Exception\TestingException;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\BeforeTestHook;
@@ -28,24 +30,8 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
         }
         $this->fixtureLoaders = new \SplObjectStorage();
         $configuration = $this->getConfigurationFromFileName($configurationFileName);
-        if ($configuration->getPDODSN()) {
-            $pdoFixtureConfig = new PDOFixtureConfig([
-                PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['beforeFirstTest']['path'],
-                PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['beforeTest']['path'],
-                PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['afterTest']['path'],
-                PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['afterLastTest']['path']
-            ]);
-            $pdoConnection = new PDOConnection(
-                $configuration->getPDODSN(),
-                $configuration->getPDOUser(),
-                $configuration->getPDOPassword()
-            );
-            $this->fixtureLoaders->attach(new PDOFixtureLoader($this->fileSystem, $pdoFixtureConfig, $pdoConnection));
-        }
+        $this->initPDOFixtureLoader($configuration);
+        $this->initAMQPFixtureLoader($configuration);
     }
 
     public function executeBeforeFirstTest(): void
@@ -88,5 +74,47 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
         }
         $data = json_decode($this->fileSystem->getFileContents($fileName), true);
         return new Configuration($data);
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @throws TestingException
+     */
+    public function initPDOFixtureLoader(Configuration $configuration): void
+    {
+        if ($configuration->getPDODSN()) {
+            $pdoFixtureConfig = new PDOFixtureConfig([
+                PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH =>
+                    $configuration->getPDOFixtures()['beforeFirstTest']['path'],
+                PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH =>
+                    $configuration->getPDOFixtures()['beforeTest']['path'],
+                PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH =>
+                    $configuration->getPDOFixtures()['afterTest']['path'],
+                PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH =>
+                    $configuration->getPDOFixtures()['afterLastTest']['path']
+            ]);
+            $pdoConnection = new PDOConnection(
+                $configuration->getPDODSN(),
+                $configuration->getPDOUser(),
+                $configuration->getPDOPassword()
+            );
+            $this->fixtureLoaders->attach(new PDOFixtureLoader($this->fileSystem, $pdoFixtureConfig, $pdoConnection));
+        }
+    }
+
+    public function initAMQPFixtureLoader(Configuration $configuration): void
+    {
+        if ($configuration->getAMQPFixtures()) {
+            $amqpFixtureConfig = new AMQPFixtureConfig($configuration->getAMQPFixtures());
+            $amqpConnection = AMQPConnection::create(
+                $configuration->getAMQPHost(),
+                $configuration->getAMQPPort(),
+                $configuration->getAMQPUser(),
+                $configuration->getAMQPPassword(),
+                $configuration->getAMQPVhost()
+            );
+            $amqpService = new RabbitMQService($amqpConnection);
+            $this->fixtureLoaders->attach(new AMQPFixtureLoader($this->fileSystem, $amqpFixtureConfig, $amqpService));
+        }
     }
 }

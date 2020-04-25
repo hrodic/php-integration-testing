@@ -32,11 +32,13 @@ services:
     environment:
       - RABBITMQ_VM_MEMORY_HIGH_WATERMARK=0.5
       - RABBITMQ_ERLANG_COOKIE=secret
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
-      - RABBITMQ_DEFAULT_VHOST=test
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+      - RABBITMQ_DEFAULT_VHOST=/
     tmpfs:
       - /var/lib/rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - $PWD/docker/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
