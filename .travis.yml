@@ -32,7 +32,7 @@ script:
   - make test-unit
   - make test-integration
   - make merge-coverage
-  - ls build/coverage
 
 after_script:
+  - cp build/coverage/merged.xml clover.xml
   - ./cc-test-reporter after-build -t clover -p ./build/coverage --exit-code $TRAVIS_TEST_RESULT
