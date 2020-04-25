@@ -29,8 +29,10 @@
     "ext-mbstring": "*",
     "ext-pdo_mysql": "*",
     "ext-xml": "*",
-    "phpunit/phpunit": "^8.5",
     "friendsofphp/php-cs-fixer": "^2.16",
+    "php-coveralls/php-coveralls": "^2.2",
+    "phpunit/phpcov": "^6.0",
+    "phpunit/phpunit": "^8.5",
     "squizlabs/php_codesniffer": "^3.5"
   },
   "suggest": {
@@ -45,7 +47,10 @@
     "psr-4": {
       "IntegrationTesting\\Tests\\Integration\\": "tests/integration",
       "IntegrationTesting\\": "tests/unit"
-    }
+    },
+    "exclude-from-classmap": [
+      "vendor/symfony/contracts/"
+    ]
   },
   "config": {
     "sort-packages": true,

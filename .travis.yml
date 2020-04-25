@@ -22,3 +22,7 @@ install:
 script:
   - make test-unit
   - make test-integration
+  - make merge-coverage
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls
