@@ -8,8 +8,6 @@ use IntegrationTesting\Exception\TestingException;
 
 final class PDOFixtureLoader implements FixtureLoader
 {
-    const EXTENSION_SQL = 'sql';
-
     private $fileSystem;
     private $config;
     private $connection;
@@ -26,8 +24,8 @@ final class PDOFixtureLoader implements FixtureLoader
      */
     public function executeBeforeFirstTest(): void
     {
-        $path = $this->config->getParam(PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH);
-        $this->runFixturesUnderPath($path);
+        $params = $this->config->getBeforeFirstTest();
+        $this->runFixturesUnderPathWithExtension($params['path'], $params['extension']);
     }
 
     /**
@@ -36,18 +34,11 @@ final class PDOFixtureLoader implements FixtureLoader
      */
     public function executeBeforeTest(string $test): void
     {
-        $stage = PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH;
-        $path = $this->config->getParam($stage);
-        $this->runFixturesUnderPath($path);
+        $params = $this->config->getBeforeTest();
+        $this->runFixturesUnderPathWithExtension($params['path'], $params['extension']);
         $className = '\\' . substr($test, 0, strpos($test, ':'));
         $methodName = 'getBeforeTestFixtureName';
-        if (method_exists($className, $methodName)) {
-            $fixtureNameFunc = "$className::$methodName";
-            $path = $this->config->getParam($stage)
-                . DIRECTORY_SEPARATOR
-                . $fixtureNameFunc();
-            $this->runFixturesUnderPath($path);
-        }
+        $this->runSpecificFixturesFromStatic($className, $methodName, $params);
     }
 
     /**
@@ -57,16 +48,11 @@ final class PDOFixtureLoader implements FixtureLoader
      */
     public function executeAfterTest(string $test, float $time): void
     {
-        $stage = PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH;
-        $path = $this->config->getParam($stage);
-        $this->runFixturesUnderPath($path);
+        $params = $this->config->getAfterTest();
+        $this->runFixturesUnderPathWithExtension($params['path'], $params['extension']);
         $className = '\\' . substr($test, 0, strpos($test, ':'));
         $methodName = 'getAfterTestFixtureName';
-        if (method_exists($className, $methodName)) {
-            $fixtureNameFunc = "$className::$methodName";
-            $path = $this->config->getParam($stage) . DIRECTORY_SEPARATOR . $fixtureNameFunc();
-            $this->runFixturesUnderPath($path);
-        }
+        $this->runSpecificFixturesFromStatic($className, $methodName, $params);
     }
 
     /**
@@ -74,21 +60,22 @@ final class PDOFixtureLoader implements FixtureLoader
      */
     public function executeAfterLastTest(): void
     {
-        $path = $this->config->getParam(PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH);
-        $this->runFixturesUnderPath($path);
+        $params = $this->config->getAfterLastTest();
+        $this->runFixturesUnderPathWithExtension($params['path'], $params['extension']);
     }
 
     /**
      * @param string $path
+     * @param string $extension
      * @throws TestingException
      */
-    public function runFixturesUnderPath(string $path): void
+    public function runFixturesUnderPathWithExtension(string $path, string $extension): void
     {
         try {
             $this->connection->PDO()->beginTransaction();
             $iterator = $this->fileSystem->getFileListIteratorFromPathByExtension(
                 $path,
-                self::EXTENSION_SQL
+                $extension
             );
             $this->fileSystem->runCallbackOnEachFileIteratorContents(
                 $iterator,
@@ -100,6 +87,23 @@ final class PDOFixtureLoader implements FixtureLoader
         } catch (TestingException $exception) {
             $this->connection->PDO()->rollBack();
             throw $exception;
+        }
+    }
+
+    /**
+     * @param string $className
+     * @param string $methodName
+     * @param array $params
+     * @throws TestingException
+     */
+    public function runSpecificFixturesFromStatic(string $className, string $methodName, array $params): void
+    {
+        if (method_exists($className, $methodName)) {
+            $fixtureNameFunc = "$className::$methodName";
+            $this->runFixturesUnderPathWithExtension(
+                $params['path'] . DIRECTORY_SEPARATOR . $fixtureNameFunc(),
+                $params['extension']
+            );
         }
     }
 }

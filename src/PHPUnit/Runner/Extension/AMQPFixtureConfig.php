@@ -2,6 +2,7 @@
 
 namespace IntegrationTesting\PHPUnit\Runner\Extension;
 
+use IntegrationTesting\Exception\TestingException;
 use IntegrationTesting\PHPUnit\Runner\Extension\AMQP\PublishMessageConfig;
 use Iterator;
 
@@ -10,7 +11,7 @@ class AMQPFixtureConfig
     private const BEFORE_FIRST_TEST_KEY = 'beforeFirstTest';
     private const BEFORE_TEST_KEY = 'beforeTest';
     private const AFTER_TEST_KEY = 'afterTest';
-    private const AFTER_LAST_TEST_KEY = 'afterLastKey';
+    private const AFTER_LAST_TEST_KEY = 'afterLastTest';
     private const PURGE_QUEUES_KEY = 'purgeQueues';
     private const PUBLISH_MESSAGES_KEY = 'publishMessages';
     private static $defaultParams = [
@@ -29,11 +30,26 @@ class AMQPFixtureConfig
             self::PURGE_QUEUES_KEY => []
         ]
     ];
-    private $params;
+    private $params = [];
 
     public function __construct(array $params)
     {
+        if ($invalidConfigParams = array_diff_key($params, self::$defaultParams)) {
+            throw new TestingException(
+                'The following elements are not valid AMQP configuration params: ' . json_encode($invalidConfigParams)
+            );
+        }
         $this->params = array_merge(self::$defaultParams, $params);
+        foreach ($this->params as $key => $value) {
+            if (isset($params[$key])) {
+                if ($invalidConfigParams = array_diff_key($params[$key], self::$defaultParams[$key])) {
+                    throw new TestingException(
+                        'The following elements are not valid AMQP configuration params: ' . json_encode($invalidConfigParams)
+                    );
+                }
+                $this->params[$key] = array_merge(self::$defaultParams[$key], $params[$key]);
+            }
+        }
     }
 
     /**
