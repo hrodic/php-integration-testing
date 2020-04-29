@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \IntegrationTesting\PHPUnit\Runner\Extension\PDOFixtureLoader
  * @uses   \IntegrationTesting\Driver\FileSystem
  */
-final class PDODatabaseExtensionTest extends TestCase
+final class PDOFixtureLoaderTest extends TestCase
 {
     public function testBeforeFirstTestBehaviour(): void
     {
@@ -20,8 +20,8 @@ final class PDODatabaseExtensionTest extends TestCase
         $connection = $this->createMock(PDOConnection::class);
 
         $config->expects($this->once())
-            ->method('getParam')
-            ->with(PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH);
+            ->method('getBeforeFirstTest')
+            ->willReturn(['path' => '/dir', 'extension' => 'sql']);
 
         $PDO->expects($this->once())
             ->method('beginTransaction');
@@ -47,8 +47,8 @@ final class PDODatabaseExtensionTest extends TestCase
         $connection = $this->createMock(PDOConnection::class);
 
         $config->expects($this->once())
-            ->method('getParam')
-            ->with(PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH);
+            ->method('getBeforeTest')
+            ->willReturn(['path' => '/dir', 'extension' => 'sql']);
 
         $PDO->expects($this->once())
             ->method('beginTransaction');
@@ -74,8 +74,8 @@ final class PDODatabaseExtensionTest extends TestCase
         $connection = $this->createMock(PDOConnection::class);
 
         $config->expects($this->once())
-            ->method('getParam')
-            ->with(PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH);
+            ->method('getAfterTest')
+            ->willReturn(['path' => '/dir', 'extension' => 'sql']);
 
         $PDO->expects($this->once())
             ->method('beginTransaction');
@@ -101,8 +101,8 @@ final class PDODatabaseExtensionTest extends TestCase
         $connection = $this->createMock(PDOConnection::class);
 
         $config->expects($this->once())
-            ->method('getParam')
-            ->with(PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH);
+            ->method('getAfterLastTest')
+            ->willReturn(['path' => '/dir', 'extension' => 'sql']);
 
         $PDO->expects($this->once())
             ->method('beginTransaction');

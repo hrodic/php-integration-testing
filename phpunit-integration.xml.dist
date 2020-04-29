@@ -30,13 +30,4 @@
             </arguments>
         </extension>
     </extensions>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-php" target="build/coverage/integration.cov"/>
-        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
-    </logging>
 </phpunit>

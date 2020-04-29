@@ -31,8 +31,7 @@ install:
 script:
   - make test-unit
   - make test-integration
-  - make merge-coverage
 
 after_script:
-  - cp build/coverage/merged.xml clover.xml
+  - cp build/coverage/unit.xml clover.xml
   - ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT

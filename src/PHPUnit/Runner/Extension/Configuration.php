@@ -46,22 +46,24 @@ final class Configuration
         if (empty($params)) {
             throw new TestingException('Configuration parameters are empty');
         }
-        if (isset($params[self::PDO_KEY])) {
-            if ($invalidConfigParams = array_diff_key($params[self::PDO_KEY], self::$defaultPDOParams)) {
-                throw new TestingException(
-                    'The following elements are not valid PDO configuration params: ' . json_encode($invalidConfigParams)
-                );
-            }
-            $this->PDOParams = array_merge(self::$defaultPDOParams, $params[self::PDO_KEY]);
+        if (!isset($params[self::PDO_KEY])) {
+            $params[self::PDO_KEY] = [];
         }
-        if (isset($params[self::AMQP_KEY])) {
-            if ($invalidConfigParams = array_diff_key($params[self::AMQP_KEY], self::$defaultAMQPParams)) {
-                throw new TestingException(
-                    'The following elements are not valid AMQP configuration params: ' . json_encode($invalidConfigParams)
-                );
-            }
-            $this->AMQPParams = array_merge(self::$defaultAMQPParams, $params[self::AMQP_KEY]);
+        if ($invalidConfigParams = array_diff_key($params[self::PDO_KEY], self::$defaultPDOParams)) {
+            throw new TestingException(
+                'The following elements are not valid PDO configuration params: ' . json_encode($invalidConfigParams)
+            );
         }
+        if (!isset($params[self::AMQP_KEY])) {
+            $params[self::AMQP_KEY] = [];
+        }
+        if ($invalidConfigParams = array_diff_key($params[self::AMQP_KEY], self::$defaultAMQPParams)) {
+            throw new TestingException(
+                'The following elements are not valid AMQP configuration params: ' . json_encode($invalidConfigParams)
+            );
+        }
+        $this->PDOParams = array_merge(self::$defaultPDOParams, $params[self::PDO_KEY]);
+        $this->AMQPParams = array_merge(self::$defaultAMQPParams, $params[self::AMQP_KEY]);
     }
 
     public function getPDODSN(): string

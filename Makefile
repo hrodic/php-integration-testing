@@ -13,9 +13,7 @@ test-unit:
 	vendor/bin/phpunit --testdox --verbose --color
 test-integration: up
 	sleep 20
-	@-vendor/bin/phpunit --color --testdox --verbose -c phpunit-integration.xml.dist
+	@-vendor/bin/phpunit --no-coverage --color --testdox --verbose -c phpunit-integration.xml.dist
 	make down
-merge-coverage:
-	vendor/bin/phpcov merge --clover build/coverage/merged.xml build/coverage
-debug-test-integration:
+test-group-integration:
 	php vendor/bin/phpunit --no-coverage --color --testdox --group debug -c phpunit-integration.xml.dist

@@ -23,6 +23,12 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
      */
     private $fileSystem;
 
+    /**
+     * Handler constructor.
+     * @param string $configurationFileName
+     * @param null $fileSystem
+     * @throws TestingException
+     */
     public function __construct(string $configurationFileName = '', $fileSystem = null)
     {
         if (null === $fileSystem) {
@@ -83,16 +89,7 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
     public function initPDOFixtureLoader(Configuration $configuration): void
     {
         if ($configuration->getPDODSN()) {
-            $pdoFixtureConfig = new PDOFixtureConfig([
-                PDOFixtureConfig::BEFORE_FIRST_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['beforeFirstTest']['path'],
-                PDOFixtureConfig::BEFORE_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['beforeTest']['path'],
-                PDOFixtureConfig::AFTER_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['afterTest']['path'],
-                PDOFixtureConfig::AFTER_LAST_TEST_PDO_FIXTURES_PATH =>
-                    $configuration->getPDOFixtures()['afterLastTest']['path']
-            ]);
+            $pdoFixtureConfig = new PDOFixtureConfig($configuration->getPDOFixtures());
             $pdoConnection = new PDOConnection(
                 $configuration->getPDODSN(),
                 $configuration->getPDOUser(),

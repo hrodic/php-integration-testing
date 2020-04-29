@@ -19,7 +19,9 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-php" target="build/coverage/unit.cov"/>
         <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+        <log type="coverage-php" target="build/coverage/unit.cov"/>
+        <log type="coverage-clover" target="build/coverage/unit.xml"/>
+        <log type="coverage-html" target="build/coverage/unit"/>
     </logging>
 </phpunit>
