@@ -88,7 +88,7 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
      */
     public function initPDOFixtureLoader(Configuration $configuration): void
     {
-        if ($configuration->getPDODSN()) {
+        if ($configuration->hasPDOFixtures() && $configuration->getPDODSN()) {
             $pdoFixtureConfig = new PDOFixtureConfig($configuration->getPDOFixtures());
             $pdoConnection = new PDOConnection(
                 $configuration->getPDODSN(),
@@ -101,7 +101,7 @@ final class Handler implements BeforeFirstTestHook, BeforeTestHook, AfterTestHoo
 
     public function initAMQPFixtureLoader(Configuration $configuration): void
     {
-        if ($configuration->getAMQPFixtures()) {
+        if ($configuration->hasAMQPFixtures() && $configuration->getAMQPFixtures()) {
             $amqpFixtureConfig = new AMQPFixtureConfig($configuration->getAMQPFixtures());
             $amqpConnection = AMQPConnection::create(
                 $configuration->getAMQPHost(),
