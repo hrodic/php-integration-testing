@@ -43,6 +43,16 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('mysql:host=mariadb:3306;dbname=test;charset=utf8', $sut->getPDODSN());
         $this->assertSame('mariadb_user', $sut->getPDOUser());
         $this->assertSame('mariadb_password', $sut->getPDOPassword());
+        $this->assertSame([], $sut->getAMQPFixtures());
+    }
+
+    public function testConfigurationWithPDOParamsAndDefaultAMQP(): void
+    {
+        $arrayConfig = array_merge($this->getPDOOnlyJSONConfiguration(), ['amqp' => []]);
+        $sut = new Configuration($arrayConfig);
+        $this->assertSame('mysql:host=mariadb:3306;dbname=test;charset=utf8', $sut->getPDODSN());
+        $this->assertSame('mariadb_user', $sut->getPDOUser());
+        $this->assertSame('mariadb_password', $sut->getPDOPassword());
         $this->assertSame([
             'beforeFirstTest' => [],
             'beforeTest' => [],
@@ -54,6 +64,18 @@ final class ConfigurationTest extends TestCase
     public function testConfigurationWithOnlyAMQPParams(): void
     {
         $sut = new Configuration($this->getAMQPOnlyJSONConfiguration());
+        $this->assertSame('rabbitmq', $sut->getAMQPHost());
+        $this->assertSame(5672, $sut->getAMQPPort());
+        $this->assertSame('rabbitmq_user', $sut->getAMQPUser());
+        $this->assertSame('rabbitmq_password', $sut->getAMQPPassword());
+        $this->assertSame('/', $sut->getAMQPVhost());
+        $this->assertSame([], $sut->getPDOFixtures());
+    }
+
+   public function testConfigurationWithAMQPParamsAndDefaultPDO(): void
+    {
+        $arrayConfig = array_merge($this->getAMQPOnlyJSONConfiguration(), ['pdo' => []]);
+        $sut = new Configuration($arrayConfig);
         $this->assertSame('rabbitmq', $sut->getAMQPHost());
         $this->assertSame(5672, $sut->getAMQPPort());
         $this->assertSame('rabbitmq_user', $sut->getAMQPUser());
